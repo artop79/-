@@ -1,0 +1,74 @@
+.ml-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 12px;
+  animation: fadeIn 0.7s;
+}
+.ml-dashboard h2 {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #1E1E2F;
+  margin-bottom: 24px;
+}
+.cmatrix-title {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.cmatrix table {
+  border-collapse: collapse;
+  background: #f7f7fb;
+}
+.cmatrix th, .cmatrix td {
+  border: 1px solid #d2e3d6;
+  padding: 7px 14px;
+  text-align: center;
+}
+.roc-info {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  display: flex;
+  gap: 24px;
+}
+.ml-filters {
+  margin: 18px 0 10px 0;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.ml-filters label {
+  font-size: 1rem;
+}
+.ml-errors-tables {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.ml-errors-table {
+  flex: 1 1 340px;
+  background: #f4f8f5;
+  border-radius: 10px;
+  padding: 14px 10px 10px 10px;
+  margin-bottom: 18px;
+}
+.ml-errors-table h4 {
+  margin-top: 0;
+  color: #c0392b;
+}
+.ml-errors-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.ml-errors-table th, .ml-errors-table td {
+  border: 1px solid #e3e3e3;
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 0.98rem;
+}
+@media (max-width: 900px) {
+  .ml-errors-tables {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

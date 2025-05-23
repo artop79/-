@@ -1,0 +1,53 @@
+.resume-analyzer-card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.resume-analyzer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.upload-area {
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  transition: all 0.3s;
+  background-color: #fafafa;
+}
+
+.upload-area:hover {
+  border-color: #1976d2;
+  background-color: #f0f7ff;
+}
+
+.analysis-progress {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.skills-chip {
+  margin: 4px;
+  transition: all 0.2s;
+}
+
+.skills-chip:hover {
+  transform: scale(1.05);
+}
+
+.result-card {
+  transition: all 0.3s;
+}
+
+.result-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.match-percentage {
+  font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+  color: #1976d2;
+}

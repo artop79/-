@@ -1,0 +1,223 @@
+.comparison-container {
+  width: 100%;
+  padding: 20px;
+  background: var(--bg-white);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.comparison-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.comparison-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.comparison-table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-bottom: 24px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+}
+
+.comparison-table th, 
+.comparison-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-light);
+  text-align: left;
+}
+
+.comparison-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-white);
+  z-index: 10;
+  font-weight: 600;
+}
+
+.criteria-column {
+  width: 180px;
+  min-width: 180px;
+  background: var(--bg-gray);
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+
+.candidate-column {
+  min-width: 200px;
+}
+
+.candidate-header {
+  padding: 8px 0;
+}
+
+.candidate-name {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.position-name {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.analysis-date {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.criteria-name {
+  font-weight: 500;
+  background: var(--bg-gray);
+  position: sticky;
+  left: 0;
+}
+
+.score-row {
+  background: rgba(243, 244, 246, 0.5);
+}
+
+.candidate-score {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.candidate-data {
+  text-align: center;
+}
+
+.match-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.high-match {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success);
+}
+
+.medium-match {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.low-match {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.skill-name {
+  font-style: italic;
+}
+
+.skill-level {
+  font-size: 0.85rem;
+}
+
+.no-skill {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.risks-list {
+  margin: 0;
+  padding-left: 16px;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.comparison-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.best-candidate-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selection-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.candidate-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.candidate-option-btn {
+  padding: 8px 16px;
+  background: var(--bg-gray);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--rounded-md);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.candidate-option-btn:hover {
+  background: var(--primary-light);
+  color: white;
+  border-color: var(--primary);
+}
+
+.close-comparison-btn {
+  padding: 10px 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--rounded-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.close-comparison-btn:hover {
+  background: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+  .comparison-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .best-candidate-selection {
+    width: 100%;
+  }
+  
+  .close-comparison-btn {
+    width: 100%;
+  }
+}

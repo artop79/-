@@ -1,0 +1,413 @@
+.vacancy-details-page {
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px);
+}
+
+.vacancy-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+}
+
+.vacancy-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.vacancy-details-header h1 {
+  font-size: 26px;
+  color: #2d3748;
+  margin: 0;
+  font-weight: 600;
+}
+
+.vacancy-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.edit-button, .interviews-button, .create-interview-button {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.edit-button {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.edit-button:hover {
+  background-color: #cbd5e0;
+}
+
+.interviews-button {
+  background-color: #ebf4ff;
+  color: #3182ce;
+}
+
+.interviews-button:hover {
+  background-color: #bee3f8;
+}
+
+.create-interview-button {
+  background-color: #4a6cf7;
+  color: white;
+}
+
+.create-interview-button:hover {
+  background-color: #3b5bd9;
+}
+
+.vacancy-status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e6fffa;
+  color: #0d9488;
+}
+
+.status-badge.inactive {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.date-created {
+  color: #718096;
+  font-size: 14px;
+}
+
+.vacancy-details-content {
+  margin-bottom: 30px;
+}
+
+.vacancy-details-content section {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.vacancy-details-content section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.vacancy-details-content h2 {
+  font-size: 20px;
+  color: #2d3748;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.description-text {
+  color: #4a5568;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.requirements-section {
+  margin-bottom: 20px;
+}
+
+.requirements-section h3 {
+  font-size: 16px;
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.requirement-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #edf2f7;
+  color: #4a5568;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.experience-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.experience-list li {
+  margin-bottom: 8px;
+}
+
+.interview-type {
+  margin-bottom: 20px;
+}
+
+.interview-type-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.interview-type-badge.smart {
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+.interview-type-badge.manual {
+  background-color: #faf5ff;
+  color: #805ad5;
+}
+
+.evaluation-criteria h3 {
+  font-size: 16px;
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.criteria-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.criteria-item {
+  width: 100%;
+}
+
+.criteria-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.criteria-bar {
+  height: 8px;
+  width: 100%;
+  background-color: #edf2f7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.criteria-progress {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.criteria-progress.technical {
+  background-color: #4a6cf7;
+}
+
+.criteria-progress.soft {
+  background-color: #38b2ac;
+}
+
+.criteria-progress.experience {
+  background-color: #ed8936;
+}
+
+.criteria-progress.culture {
+  background-color: #9f7aea;
+}
+
+.vacancy-details-footer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 30px;
+}
+
+.back-button {
+  padding: 10px 18px;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  color: #4a5568;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  background-color: #f9fafb;
+  border-color: #cbd5e0;
+}
+
+/* Loader styles */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(74, 108, 247, 0.2);
+  border-radius: 50%;
+  border-top-color: #4a6cf7;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error styles */
+.error {
+  padding: 30px;
+  text-align: center;
+  color: #e53e3e;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #2d3748;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: #718096;
+}
+
+.modal-content form {
+  padding: 20px;
+}
+
+.modal-footer {
+  padding: 20px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-button, .confirm-button {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-button {
+  background-color: white;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+}
+
+.cancel-button:hover {
+  background-color: #f9fafb;
+  border-color: #cbd5e0;
+}
+
+.confirm-button {
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+}
+
+.confirm-button:hover {
+  background-color: #3b5bd9;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .vacancy-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .vacancy-actions {
+    width: 100%;
+  }
+  
+  .edit-button, .interviews-button, .create-interview-button {
+    flex-grow: 1;
+    text-align: center;
+  }
+}

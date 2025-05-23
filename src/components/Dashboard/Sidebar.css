@@ -1,0 +1,23 @@
+.sidebar {
+  transition: all 0.3s ease;
+}
+
+.sidebar:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .MuiListItemButton-root {
+  transition: all 0.2s ease;
+}
+
+.sidebar .MuiListItemButton-root:hover {
+  transform: translateX(4px);
+}
+
+.sidebar .MuiListItemIcon-root {
+  transition: all 0.2s ease;
+}
+
+.sidebar .MuiListItemButton-root:hover .MuiListItemIcon-root {
+  transform: scale(1.2);
+}

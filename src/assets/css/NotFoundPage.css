@@ -1,0 +1,101 @@
+.not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.not-found-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.not-found-content {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 50px 30px;
+}
+
+.not-found-title {
+  font-size: 120px;
+  font-weight: 700;
+  color: #4a6cf7;
+  margin: 0;
+  line-height: 1;
+}
+
+.not-found-subtitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 20px 0;
+}
+
+.not-found-description {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.back-home-button, .vacancies-button {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.back-home-button {
+  background-color: #4a6cf7;
+  color: white;
+}
+
+.back-home-button:hover {
+  background-color: #3b5bd9;
+}
+
+.vacancies-button {
+  background-color: white;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+}
+
+.vacancies-button:hover {
+  background-color: #f9fafb;
+  border-color: #cbd5e0;
+}
+
+@media (max-width: 480px) {
+  .not-found-title {
+    font-size: 80px;
+  }
+  
+  .not-found-subtitle {
+    font-size: 24px;
+  }
+  
+  .not-found-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .back-home-button, .vacancies-button {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raplle - Анализ резюме и ИИ-интервью</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4cc9f0;
+            --dark: #111827;
+            --medium: #4b5563;
+            --light-medium: #9ca3af;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background-color: #f9fafb;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: var(--white);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--light-medium);
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            position: relative;
+            color: var(--medium);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .card {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--light-medium);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .button-outline:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .analysis-result {
+            display: none;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .match-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .score-badge {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-name {
+            width: 120px;
+            font-weight: 500;
+        }
+        
+        .skill-bar-container {
+            flex: 1;
+            height: 8px;
+            background-color: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .skill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4361ee, #4cc9f0);
+            border-radius: 4px;
+        }
+        
+        .skill-score {
+            width: 60px;
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        .recommendation {
+            display: flex;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            align-items: flex-start;
+        }
+        
+        .recommendation.positive {
+            background-color: rgba(74, 222, 128, 0.1);
+        }
+        
+        .recommendation.neutral {
+            background-color: rgba(251, 191, 36, 0.1);
+        }
+        
+        .recommendation.negative {
+            background-color: rgba(248, 113, 113, 0.1);
+        }
+        
+        .rec-icon {
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .positive .rec-icon {
+            color: #059669;
+        }
+        
+        .neutral .rec-icon {
+            color: #b45309;
+        }
+        
+        .negative .rec-icon {
+            color: #b91c1c;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .interview-container {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .interview-sidebar {
+            width: 35%;
+        }
+        
+        .interview-main {
+            flex: 1;
+        }
+        
+        .question-list {
+            margin-bottom: 2rem;
+        }
+        
+        .question-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .question-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .question-item.active {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .question-number {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light);
+            border-radius: 50%;
+            font-weight: 600;
+        }
+        
+        .question-item.active .question-number {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .interview-chat {
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .message {
+            max-width: 75%;
+            margin-bottom: 1.5rem;
+            display: flex;
+        }
+        
+        .message.ai {
+            align-self: flex-start;
+        }
+        
+        .message.user {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+        
+        .message-bubble {
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .message.ai .message-bubble {
+            background-color: var(--white);
+            border-bottom-left-radius: 0;
+        }
+        
+        .message.user .message-bubble {
+            background-color: #e0f2fe;
+            border-bottom-right-radius: 0;
+        }
+        
+        .reply-box {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        
+        .reply-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-medium);
+            border-radius: 8px 0 0 8px;
+            resize: none;
+            height: 60px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .send-button {
+            padding: 0 1.5rem;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: var(--white);
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        
+        .analysis-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .analysis-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .metrics {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric {
+            flex: 1;
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: var(--medium);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .interview-container {
+                flex-direction: column;
+            }
+            
+            .interview-sidebar {
+                width: 100%;
+            }
+            
+            .metrics {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Raplle</div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="resume-analysis">Анализ резюме</button>
+            <button class="tab" data-tab="ai-interview">ИИ-интервью</button>
+        </div>
+        
+        <!-- Секция анализа резюме -->
+        <section id="resume-analysis" class="section active">
+            <div class="card">
+                <h2 class="section-title">Загрузите резюме для анализа</h2>
+                <div class="upload-area" id="resume-upload">
+                    <div class="upload-icon">📄</div>
+                    <h3>Перетащите файл или нажмите для выбора</h3>
+                    <p>Поддерживаемые форматы: PDF, DOCX</p>
+                    <input type="file" id="file-input" class="file-input" accept=".pdf,.docx,.doc">
+                    <button class="button" id="upload-button">Выбрать файл</button>
+                </div>
+                
+                <div class="analysis-result" id="analysis-result">
+                    <div class="result-header">
+                        <h3>Результаты анализа</h3>
+                        <div class="match-score">
+                            <span>Соответствие вакансии:</span>
+                            <div class="score-badge">87%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3>Ключевые навыки</h3>
+                        <div class="skills">
+                            <div class="skill-item">
+                                <div class="skill-name">React</div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                                <div class="skill-score">9/10</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">JavaScript</div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                                <div class="skill-score">8.5/10</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">TypeScript</div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 75%;"></div>
+                                </div>
+                                <div class="skill-score">7.5/10</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Redux</div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 80%;"></div>
+                                </div>
+                                <div class="skill-score">8/10</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3>Рекомендации</h3>
+                        <div class="recommendations">
+                            <div class="recommendation positive">
+                                <div class="rec-icon">✓</div>
+                                <div>Сильный технический бэкграунд в требуемых технологиях</div>
+                            </div>
+                            <div class="recommendation positive">
+                                <div class="rec-icon">✓</div>
+                                <div>Опыт работы более 3 лет в аналогичной позиции</div>
+                            </div>
+                            <div class="recommendation neutral">
+                                <div class="rec-icon">⚠</div>
+                                <div>Нет упоминания опыта в международных проектах</div>
+                            </div>
+                            <div class="recommendation negative">
+                                <div class="rec-icon">✗</div>
+                                <div>Отсутствует опыт работы с GraphQL</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="button button-outline">Детальный отчет</button>
+                        <button class="button" id="start-interview">Создать интервью</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция ИИ-интервью -->
+        <section id="ai-interview" class="section">
+            <div class="card">
+                <h2 class="section-title">ИИ-интервью: Frontend Developer</h2>
+                
+                <div class="interview-container">
+                    <div class="interview-sidebar">
+                        <div class="question-list">
+                            <div class="question-item" data-question="1">
+                                <div class="question-number">1</div>
+                                <div>Расскажите о вашем опыте работы с React</div>
+                            </div>
+                            <div class="question-item" data-question="2">
+                                <div class="question-number">2</div>
+                                <div>Как вы работаете с состоянием в React?</div>
+                            </div>
+                            <div class="question-item active" data-question="3">
+                                <div class="question-number">3</div>
+                                <div>Расскажите о вашем опыте оптимизации React-приложений</div>
+                            </div>
+                            <div class="question-item" data-question="4">
+                                <div class="question-number">4</div>
+                                <div>Как вы тестируете React-компоненты?</div>
+                            </div>
+                            <div class="question-item" data-question="5">
+                                <div class="question-number">5</div>
+                                <div>Опишите ваш опыт работы в команде</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="interview-main">
+                        <div class="interview-chat" id="chat-container">
+                            <div class="message ai">
+                                <div class="message-bubble">
+                                    Здравствуйте! Я AI-интервьюер. Сегодня мы обсудим вашу кандидатуру на позицию Frontend Developer. Расскажите, пожалуйста, о вашем опыте работы с React.
+                                </div>
+                            </div>
+                            <div class="message user">
+                                <div class="message-bubble">
+                                    Я работаю с React уже более 4 лет. Начинал с версии 15, сейчас активно использую React 18 с хуками. Разрабатывал как небольшие приложения, так и крупные корпоративные системы. Последние 2 года активно использую TypeScript.
+                                </div>
+                            </div>
+                            <div class="message ai">
+                                <div class="message-bubble">
+                                    Спасибо за ответ. Как вы работаете с состоянием в React? Какие подходы и библиотеки используете?
+                                </div>
+                            </div>
+                            <div class="message user">
+                                <div class="message-bubble">
+                                    Для управления состоянием использую несколько подходов в зависимости от сложности проекта. Для простых компонентов достаточно useState. Для более сложных случаев использую useContext + useReducer. В крупных проектах работаю с Redux (включая Redux Toolkit) или MobX. Недавно начал изучать Recoil.
+                                </div>
+                            </div>
+                            <div class="message ai">
+                                <div class="message-bubble">
+                                    Отлично. Расскажите о вашем опыте оптимизации производительности React-приложений.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="reply-box">
+                            <textarea class="reply-input" placeholder="Введите ваш ответ..." id="reply-input"></textarea>
+                            <button class="send-button" id="send-button">Отправить</button>
+                        </div>
+                        
+                        <div class="analysis-section">
+                            <h3>AI-анализ ответов</h3>
+                            <div class="metrics">
+                                <div class="metric">
+                                    <div class="metric-value">85%</div>
+                                    <div class="metric-label">Релевантность</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">90%</div>
+                                    <div class="metric-label">Глубина знаний</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">80%</div>
+                                    <div class="metric-label">Коммуникация</div>
+                                </div>
+                            </div>
+                            <p>Кандидат показывает хорошее понимание React и управления состоянием. Ответы структурированные и содержательные. Упоминает современные технологии и подходы.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // Переключение между вкладками
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.section');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                
+                // Активируем вкладку
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Показываем соответствующую секцию
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === target) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Загрузка резюме и отображение результатов
+        const uploadButton = document.getElementById('upload-button');
+        const fileInput = document.getElementById('file-input');
+        const uploadArea = document.getElementById('resume-upload');
+        const analysisResult = document.getElementById('analysis-result');
+        const startInterviewButton = document.getElementById('start-interview');
+        
+        uploadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4361ee';
+            uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '';
+            uploadArea.style.backgroundColor = '';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '';
+            uploadArea.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length) {
+                simulateFileUpload();
+            }
+        });
+        
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                simulateFileUpload();
+            }
+        });
+        
+        function simulateFileUpload() {
+            uploadArea.innerHTML = '<div class="upload-icon">⏳</div><h3>Анализ резюме...</h3><p>Это может занять несколько секунд</p>';
+            
+            // Симуляция загрузки и анализа файла
+            setTimeout(() => {
+                uploadArea.style.display = 'none';
+                analysisResult.style.display = 'block';
+            }, 2000);
+        }
+        
+        // Переход к интервью
+        startInterviewButton.addEventListener('click', () => {
+            tabs[1].click(); // Переключаемся на вкладку интервью
+        });
+        
+        // Функциональность чата
+        const sendButton = document.getElementById('send-button');
+        const replyInput = document.getElementById('reply-input');
+        const chatContainer = document.getElementById('chat-container');
+        
+        sendButton.addEventListener('click', sendMessage);
+        replyInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = replyInput.value.trim();
+            if (!message) return;
+            
+            // Добавляем сообщение пользователя
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user';
+            userMessageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${message}
+                </div>
+            `;
+            chatContainer.appendChild(userMessageDiv);
+            
+            // Очищаем поле ввода
+            replyInput.value = '';
+            
+            // Прокручиваем чат вниз
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Симулируем ответ AI после небольшой задержки
+            setTimeout(() => {
+                const aiMessageDiv = document.createElement('div');
+                aiMessageDiv.className = 'message ai';
+                aiMessageDiv.innerHTML = `
+                    <div class="message-bubble">
+                        Спасибо за ваш подробный ответ по оптимизации React-приложений! Как вы тестируете React-компоненты?
+                    </div>
+                `;
+                chatContainer.appendChild(aiMessageDiv);
+                
+                // Активируем следующий вопрос
+                const activeQuestion = document.querySelector('.question-item.active');
+                activeQuestion.classList.remove('active');
+                
+                const nextQuestion = document.querySelector('[data-question="4"]');
+                nextQuestion.classList.add('active');
+                
+                // Прокручиваем чат вниз
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+        
+        // Выбор вопросов из списка
+        const questionItems = document.querySelectorAll('.question-item');
+        
+        questionItems.forEach(item => {
+            item.addEventListener('click', () => {
+                questionItems.forEach(q => q.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Здесь можно добавить логику для отображения конкретного вопроса
+            });
+        });
+    </script>
+</body>
+</html>

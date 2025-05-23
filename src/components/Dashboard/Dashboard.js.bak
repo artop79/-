@@ -1,0 +1,737 @@
+import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import { 
+  Box, 
+  Typography, 
+  Grid, 
+  Avatar, 
+  Card, 
+  CardContent, 
+  IconButton,
+  Button,
+  Divider,
+  LinearProgress,
+  Menu,
+  MenuItem
+} from '@mui/material';
+import SidebarNew from './SidebarNew';
+import Header from './Header';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { 
+  PieChart, 
+  Pie, 
+  Cell, 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  LineChart, 
+  Line, 
+  Legend, 
+  AreaChart, 
+  Area 
+} from 'recharts';
+
+// Icons
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import WorkIcon from '@mui/icons-material/Work';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import DescriptionIcon from '@mui/icons-material/Description';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
+
+// Styled Components
+const MainContent = styled(Box)(({ theme }) => ({
+  marginLeft: 220,
+  marginRight: 0,
+  padding: theme.spacing(3),
+  width: 'calc(100% - 220px)',
+  minHeight: '100vh',
+  backgroundColor: theme.palette.background.default,
+}));
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  background: '#212E48',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 10px 20px rgba(0, 0, 0, 0.15)',
+  borderRadius: 16,
+  overflow: 'hidden',
+  border: '1px solid rgba(255, 255, 255, 0.05)',
+  height: '100%',
+  position: 'relative',
+}));
+
+const CardHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: theme.spacing(2),
+  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+}));
+
+const GlowEffect = styled(Box)(({ color, theme }) => ({
+  position: 'absolute',
+  width: '150px',
+  height: '150px',
+  borderRadius: '50%',
+  background: color || theme.palette.primary.main,
+  filter: 'blur(60px)',
+  opacity: 0.15,
+  top: -50,
+  right: -50,
+  zIndex: 0,
+}));
+
+const MetricValue = styled(Typography)(({ theme, color }) => ({
+  fontWeight: 600,
+  fontSize: '24px',
+  letterSpacing: '-0.5px',
+  color: color || '#fff',
+  marginBottom: theme.spacing(1),
+}));
+
+const StatsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100%',
+  position: 'relative',
+  zIndex: 2,
+}));
+
+const StatBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: 12,
+  background: 'rgba(255, 255, 255, 0.03)',
+  backdropFilter: 'blur(10px)',
+  marginBottom: theme.spacing(2),
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
+
+const IconBox = styled(Box)(({ theme, color }) => ({
+  width: 40,
+  height: 40,
+  borderRadius: '50%',
+  backgroundColor: color ? `${color}15` : 'rgba(54, 153, 255, 0.15)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: theme.spacing(1.5),
+}));
+
+const TrendBox = styled(Box)(({ theme, isPositive }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  color: isPositive ? theme.palette.success.main : theme.palette.error.main,
+  fontSize: '0.75rem',
+  background: isPositive ? 'rgba(27, 197, 189, 0.15)' : 'rgba(246, 78, 96, 0.15)',
+  padding: '3px 8px',
+  borderRadius: 12,
+  fontWeight: 500,
+}));
+
+const CandidateItem = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(1.5),
+  borderRadius: 8,
+  transition: 'all 0.2s',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+  }
+}));
+
+const ChartContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  padding: theme.spacing(1),
+  position: 'relative',
+  zIndex: 2,
+}));
+
+const pieChartData = [
+  { name: 'Suitable', value: 65, color: '#3699FF' },
+  { name: 'Partially', value: 25, color: '#FFA800' },
+  { name: 'Not Suitable', value: 10, color: '#F64E60' },
+];
+
+const areaChartData = [
+  { name: 'Jan', users: 3200, leads: 1400, sales: 2400 },
+  { name: 'Feb', users: 4000, leads: 1398, sales: 2210 },
+  { name: 'Mar', users: 2780, leads: 3908, sales: 2000 },
+  { name: 'Apr', users: 1890, leads: 4800, sales: 2181 },
+  { name: 'May', users: 2390, leads: 3800, sales: 2500 },
+  { name: 'Jun', users: 3490, leads: 4300, sales: 2100 },
+  { name: 'Jul', users: 3490, leads: 4300, sales: 2100 },
+  { name: 'Aug', users: 4000, leads: 2400, sales: 2400 },
+  { name: 'Sep', users: 3000, leads: 1398, sales: 2210 },
+  { name: 'Oct', users: 2000, leads: 9800, sales: 2290 },
+  { name: 'Nov', users: 2780, leads: 3908, sales: 2000 },
+  { name: 'Dec', users: 4000, leads: 4800, sales: 2000 },
+];
+
+const barChartData = [
+  { name: '1', count: 200 },
+  { name: '2', count: 300 },
+  { name: '3', count: 100 },
+  { name: '4', count: 450 },
+  { name: '5', count: 150 },
+  { name: '6', count: 200 },
+  { name: '7', count: 350 },
+  { name: '8', count: 100 },
+  { name: '9', count: 300 },
+  { name: '10', count: 400 },
+];
+
+const performanceData = [
+  { name: 'Jan', score: 75, target: 80 },
+  { name: 'Feb', score: 68, target: 80 },
+  { name: 'Mar', score: 72, target: 80 },
+  { name: 'Apr', score: 78, target: 80 },
+  { name: 'May', score: 82, target: 80 },
+  { name: 'Jun', score: 78, target: 80 },
+  { name: 'Jul', score: 85, target: 80 },
+];
+
+const candidates = [
+  { name: 'John Smith', role: 'Frontend Developer', score: 92, status: 'Interviewed', avatar: '📊' },
+  { name: 'Maria Garcia', role: 'UI/UX Designer', score: 88, status: 'Review', avatar: '🎨' },
+  { name: 'Alex Johnson', role: 'DevOps Engineer', score: 78, status: 'Pending', avatar: '🛠️' },
+  { name: 'Sara Williams', role: 'Project Manager', score: 94, status: 'Hired', avatar: '📈' },
+];
+
+const projects = [
+  { name: 'Chakra Sort UI Version', members: 5, budget: '$14,000', completion: 60 },
+  { name: 'Add Progress Track', members: 3, budget: '$3,000', completion: 45 },
+  { name: 'Fix Platform Errors', members: 2, budget: '$1,800', completion: 75 },
+];
+
+const activeUserStats = [
+  { label: 'Users', value: '32,984', icon: <PeopleAltIcon fontSize="small" />, color: '#3699FF' },
+  { label: 'Clicks', value: '2.42m', icon: <TrendingUpIcon fontSize="small" />, color: '#36B37E' },
+  { label: 'Sales', value: '2,400$', icon: <WorkIcon fontSize="small" />, color: '#FFA800' },
+  { label: 'Items', value: '320', icon: <DescriptionIcon fontSize="small" />, color: '#F64E60' },
+];
+
+const Dashboard = () => {
+  const theme = useTheme();
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [anchorEl, setAnchorEl] = useState(null);
+  
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const currentDate = new Date().toLocaleDateString('en-US', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
+  
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <SidebarNew activeTab={activeTab} />
+      <Header />
+      <MainContent>
+        {/* Приветствие и метрики */}
+        <Box sx={{ pt: 8, pb: 2 }}>
+          <Grid container spacing={3}>
+            {/* Приветственная карточка */}
+            <Grid item xs={12} md={6} lg={4}>
+              <StyledCard>
+                <GlowEffect color="#3699FF" />
+                <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Avatar sx={{ bgcolor: '#3699FF', boxShadow: '0 4px 12px rgba(54, 153, 255, 0.35)' }}>J</Avatar>
+                    <Box sx={{ ml: 1.5 }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'white' }}>
+                        Welcome back,
+                      </Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.025em' }}>
+                        Mark Johnson
+                      </Typography>
+                    </Box>
+                  </Box>
+                  
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    Glad to see you again! <br />
+                    Ask me anything.
+                  </Typography>
+                  
+                  <Typography variant="subtitle2" color="primary" sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    fontSize: '0.75rem',
+                    opacity: 0.7,
+                    mt: 2,
+                    cursor: 'pointer',
+                    '&:hover': { opacity: 1 }
+                  }}>
+                    Tap to record <Box component="span" sx={{ ml: 1, fontSize: '1rem' }}>→</Box>
+                  </Typography>
+                </Box>
+              </StyledCard>
+            </Grid>
+            
+            {/* Статистические карточки */}
+            <Grid item xs={12} md={6} lg={8}>
+              <Grid container spacing={3} height="100%">
+                <Grid item xs={6} md={3}>
+                  <StyledCard>
+                    <GlowEffect color="#3699FF" />
+                    <Box sx={{ p: 2, position: 'relative', zIndex: 1 }}>
+                      <Typography variant="caption" color="text.secondary">
+                        Today's Money
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+                        <MetricValue>
+                          $53,000
+                        </MetricValue>
+                        <TrendBox isPositive={true}>
+                          <TrendingUpIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                          +55%
+                        </TrendBox>
+                      </Box>
+                    </Box>
+                  </StyledCard>
+                </Grid>
+                
+                <Grid item xs={6} md={3}>
+                  <StyledCard>
+                    <GlowEffect color="#36B37E" />
+                    <Box sx={{ p: 2, position: 'relative', zIndex: 1 }}>
+                      <Typography variant="caption" color="text.secondary">
+                        Today's Users
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+                        <MetricValue>
+                          2,300
+                        </MetricValue>
+                        <TrendBox isPositive={true}>
+                          <TrendingUpIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                          +3%
+                        </TrendBox>
+                      </Box>
+                    </Box>
+                  </StyledCard>
+                </Grid>
+                
+                <Grid item xs={6} md={3}>
+                  <StyledCard>
+                    <GlowEffect color="#F64E60" />
+                    <Box sx={{ p: 2, position: 'relative', zIndex: 1 }}>
+                      <Typography variant="caption" color="text.secondary">
+                        New Clients
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+                        <MetricValue>
+                          +3,052
+                        </MetricValue>
+                        <TrendBox isPositive={false}>
+                          <TrendingDownIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                          -14%
+                        </TrendBox>
+                      </Box>
+                    </Box>
+                  </StyledCard>
+                </Grid>
+                
+                <Grid item xs={6} md={3}>
+                  <StyledCard>
+                    <GlowEffect color="#8950FC" />
+                    <Box sx={{ p: 2, position: 'relative', zIndex: 1 }}>
+                      <Typography variant="caption" color="text.secondary">
+                        Total Sales
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+                        <MetricValue>
+                          $173,000
+                        </MetricValue>
+                        <TrendBox isPositive={true}>
+                          <TrendingUpIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                          +8%
+                        </TrendBox>
+                      </Box>
+                    </Box>
+                  </StyledCard>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+        
+        {/* График продаж */}
+        <Grid container spacing={3} sx={{ my: 3 }}>
+          {/* Основной график с областями */}
+          <Grid item xs={12} lg={8}>
+            <StyledCard>
+              <CardHeader>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    Sales overview
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    (+15) more in 2023
+                  </Typography>
+                </Box>
+                <IconButton size="small" onClick={handleMenuClick}>
+                  <MoreVertIcon fontSize="small" />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MenuItem onClick={handleMenuClose}>Today</MenuItem>
+                  <MenuItem onClick={handleMenuClose}>This Week</MenuItem>
+                  <MenuItem onClick={handleMenuClose}>This Month</MenuItem>
+                </Menu>
+              </CardHeader>
+              <ChartContainer>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart
+                    data={areaChartData}
+                    margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3699FF" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#3699FF" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: '#92929F', fontSize: 10 }}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: '#92929F', fontSize: 10 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#1E1E2D', 
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderRadius: 8, 
+                        boxShadow: '0 8px 16px rgba(0,0,0,0.24)'
+                      }} 
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="users" 
+                      stroke="#3699FF" 
+                      strokeWidth={2}
+                      fillOpacity={1} 
+                      fill="url(#colorUsers)" 
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </StyledCard>
+          </Grid>
+          
+          {/* Статистика по барам */}
+          <Grid item xs={12} lg={4}>
+            <StyledCard sx={{ height: '100%' }}>
+              <CardHeader>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Active Users
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  (+23) than last week
+                </Typography>
+              </CardHeader>
+              <Box sx={{ p: 2 }}>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={barChartData} barSize={15}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: '#92929F', fontSize: 10 }}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: '#92929F', fontSize: 10 }}
+                    />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+                      contentStyle={{ 
+                        backgroundColor: '#1E1E2D', 
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderRadius: 8, 
+                        boxShadow: '0 8px 16px rgba(0,0,0,0.24)'
+                      }} 
+                    />
+                    <Bar 
+                      dataKey="count" 
+                      fill="#FFFFFF" 
+                      radius={[4, 4, 0, 0]} 
+                      background={{ fill: 'rgba(255,255,255,0.05)' }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Box>
+              <Box sx={{ p: 2, pt: 0 }}>
+                <Typography variant="subtitle2" sx={{ mb: 2 }}>
+                  Active Users
+                </Typography>
+                <Grid container spacing={2}>
+                  {activeUserStats.map((stat, index) => (
+                    <Grid item xs={6} key={index}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <IconBox color={stat.color}>
+                          {stat.icon}
+                        </IconBox>
+                        <Box>
+                          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                            {stat.value}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {stat.label}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </StyledCard>
+          </Grid>
+        </Grid>
+        
+        {/* Проекты и задачи */}
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {/* Таблица проектов */}
+          <Grid item xs={12} lg={6}>
+            <StyledCard>
+              <CardHeader>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    Projects
+                  </Typography>
+                  <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ 
+                      width: 8, 
+                      height: 8, 
+                      borderRadius: '50%', 
+                      backgroundColor: '#36B37E',
+                      mr: 0.5 
+                    }} />
+                    <Typography variant="caption" color="text.secondary">
+                      30 done this month
+                    </Typography>
+                  </Box>
+                </Box>
+                <IconButton size="small" sx={{ ml: 1 }}>
+                  <MoreVertIcon fontSize="small" />
+                </IconButton>
+              </CardHeader>
+              <Box sx={{ p: 0 }}>
+                <Box sx={{ 
+                  p: 2, 
+                  borderBottom: '1px solid rgba(255,255,255,0.05)', 
+                  display: 'flex', 
+                  justifyContent: 'space-between' 
+                }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ flex: 1 }}>
+                    COMPANIES
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ flex: 1, textAlign: 'center' }}>
+                    MEMBERS
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ flex: 1, textAlign: 'center' }}>
+                    BUDGET
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ flex: 1, textAlign: 'right' }}>
+                    COMPLETION
+                  </Typography>
+                </Box>
+                {projects.map((project, index) => (
+                  <Box key={index} sx={{ 
+                    p: 2, 
+                    borderBottom: index < projects.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    justifyContent: 'space-between' 
+                  }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {project.name}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, textAlign: 'center' }}>
+                      <Typography variant="body2">
+                        {project.members}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, textAlign: 'center' }}>
+                      <Typography variant="body2">
+                        {project.budget}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, textAlign: 'right' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                        <Typography variant="body2" sx={{ mr: 1 }}>
+                          {project.completion}%
+                        </Typography>
+                        <Box sx={{ width: 60 }}>
+                          <LinearProgress 
+                            variant="determinate" 
+                            value={project.completion} 
+                            sx={{ 
+                              height: 6, 
+                              borderRadius: 3,
+                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              '& .MuiLinearProgress-bar': {
+                                borderRadius: 3,
+                                backgroundColor: '#3699FF'
+                              }
+                            }} 
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </StyledCard>
+          </Grid>
+
+          {/* Удовлетворенность и отслеживание */}
+          <Grid item xs={12} md={6} lg={3}>
+            <StyledCard sx={{ height: '100%' }}>
+              <CardHeader>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Satisfaction Rate
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  From all projects
+                </Typography>
+              </CardHeader>
+              <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100% - 60px)' }}>
+                <Box sx={{ position: 'relative', width: 160, height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    width: '100%', 
+                    height: '100%', 
+                    borderRadius: '50%',
+                    background: 'conic-gradient(#3699FF 0% 95%, rgba(255,255,255,0.1) 95% 100%)',
+                    transform: 'rotate(90deg)'
+                  }} />
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    top: '10%', 
+                    left: '10%', 
+                    width: '80%', 
+                    height: '80%', 
+                    borderRadius: '50%',
+                    backgroundColor: theme.palette.background.paper,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column'
+                  }}>
+                    <Typography variant="h4" sx={{ fontWeight: 700, mb: -1 }}>
+                      95%
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Based on Likes
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </StyledCard>
+          </Grid>
+          
+          {/* Отслеживание рефералов */}
+          <Grid item xs={12} md={6} lg={3}>
+            <StyledCard sx={{ height: '100%' }}>
+              <CardHeader>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Referral Tracking
+                </Typography>
+              </CardHeader>
+              <Box sx={{ p: 2, height: 'calc(100% - 60px)' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Invited
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      145 people
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
+                      Bonus
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      1,465
+                    </Typography>
+                  </Box>
+                </Box>
+                
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Safety
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Rating
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ position: 'relative', width: '100%', height: 20, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 10, mb: 2 }}>
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    height: '100%', 
+                    width: '93%', 
+                    borderRadius: 10,
+                    background: 'linear-gradient(90deg, rgba(54, 179, 126, 0.7) 0%, #36B37E 100%)'
+                  }} />
+                </Box>
+                
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Typography variant="h3" sx={{ fontWeight: 700, color: '#36B37E' }}>
+                    9.3
+                  </Typography>
+                </Box>
+              </Box>
+            </StyledCard>
+          </Grid>
+        </Grid>
+      </MainContent>
+    </Box>
+  );
+};
+
+export default Dashboard;

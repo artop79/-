@@ -1,0 +1,66 @@
+.analytics-container {
+  transition: all 0.3s ease;
+}
+
+.analytics-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0;
+  color: #1976d2;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: #637381;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin: 8px 0;
+  background-color: #e0e0e0;
+  overflow: hidden;
+}
+
+.progress-value {
+  height: 100%;
+  background: linear-gradient(to right, #1976d2, #64b5f6);
+  border-radius: 4px;
+  transition: width 1s ease-in-out;
+}

@@ -1,0 +1,107 @@
+/* Стили для мобильного свайп-интерфейса */
+.swipe-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  display: flex;
+  padding: 16px 0 24px 0;
+  scrollbar-width: none; /* Firefox */
+  position: relative;
+}
+
+.swipe-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.swipe-card {
+  scroll-snap-align: center;
+  flex: 0 0 280px;
+  width: 280px;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.swipe-card:first-child {
+  margin-left: 16px;
+}
+
+.swipe-card:last-child {
+  margin-right: 16px;
+}
+
+.swipe-card-selected {
+  border-color: #1976d2;
+  border-width: 2px;
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+}
+
+.swipe-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.swipe-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.swipe-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.swipe-indicator-active {
+  background-color: #1976d2;
+  transform: scale(1.2);
+}
+
+/* Анимация для привлечения внимания к свайпу */
+@keyframes pulse-arrow-left {
+  0% { opacity: 0.5; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(-5px); }
+  100% { opacity: 0.5; transform: translateX(0); }
+}
+
+@keyframes pulse-arrow-right {
+  0% { opacity: 0.5; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(5px); }
+  100% { opacity: 0.5; transform: translateX(0); }
+}
+
+.arrow-left {
+  animation: pulse-arrow-left 1.5s infinite;
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.arrow-right {
+  animation: pulse-arrow-right 1.5s infinite;
+  margin-left: 8px;
+  font-size: 18px;
+}
+
+/* Стили для скролл-трекера */
+.scroll-track {
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}

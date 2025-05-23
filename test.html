@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест Recrutor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1976d2;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #1565c0;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .skill-item {
+            background-color: #f5f7f9;
+            padding: 10px 15px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .skill-item.selected {
+            background-color: #e3f2fd;
+            border: 1px solid #1976d2;
+        }
+        .skill-item input {
+            margin-right: 10px;
+        }
+        .skill-name {
+            font-weight: 500;
+        }
+        .skill-category {
+            margin-left: auto;
+            background-color: #1976d2;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .skill-category.soft {
+            background-color: #9c27b0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тест функции выбора навыков</h1>
+        
+        <div class="section">
+            <h2>Шаг 1: Описание вакансии</h2>
+            <p>Введите описание вакансии (минимум 30 символов):</p>
+            <textarea id="job-description" placeholder="Например: Требуется опытный разработчик JavaScript со знанием React, Node.js и MongoDB. Кандидат должен обладать навыками работы в команде, быть коммуникабельным и адаптивным..."></textarea>
+            <button id="extract-skills">Извлечь навыки</button>
+        </div>
+        
+        <div class="section">
+            <h2>Шаг 2: Выбор приоритетных навыков</h2>
+            <p>Отметьте навыки, которые являются ключевыми для этой вакансии:</p>
+            <div id="skills-container" class="skills-grid"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Шаг 3: Анализ</h2>
+            <p>Выбранные приоритетные навыки:</p>
+            <div id="selected-skills"></div>
+            <button id="analyze-button">Анализировать</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Списки технических и мягких навыков (сокращенная версия)
+            const technicalSkills = [
+                "JavaScript", "React", "Python", "Java", "C++", "Node.js", "Docker", 
+                "Kubernetes", "AWS", "Azure", "SQL", "MongoDB", "Git", "CI/CD",
+                "HTML", "CSS", "TypeScript", "Redux", "REST API", "GraphQL",
+                "Agile", "Scrum", "Kanban"
+            ];
+            
+            const softSkills = [
+                "Коммуникабельность", "Работа в команде", "Лидерство", "Аналитическое мышление",
+                "Управление временем", "Решение проблем", "Креативность", "Адаптивность",
+                "Критическое мышление", "Эмоциональный интеллект", "Управление стрессом"
+            ];
+            
+            const extractButton = document.getElementById('extract-skills');
+            const analyzeButton = document.getElementById('analyze-button');
+            const jobDescriptionInput = document.getElementById('job-description');
+            const skillsContainer = document.getElementById('skills-container');
+            const selectedSkillsContainer = document.getElementById('selected-skills');
+            
+            let extractedSkills = [];
+            let prioritySkills = [];
+            
+            extractButton.addEventListener('click', function() {
+                const description = jobDescriptionInput.value;
+                if (description.trim().length < 30) {
+                    alert('Пожалуйста, введите описание вакансии (минимум 30 символов)');
+                    return;
+                }
+                
+                extractSkillsFromDescription(description);
+                renderSkills();
+            });
+            
+            analyzeButton.addEventListener('click', function() {
+                updateSelectedSkills();
+                alert('Анализ с выбранными приоритетными навыками: ' + prioritySkills.join(', '));
+            });
+            
+            function extractSkillsFromDescription(description) {
+                extractedSkills = [];
+                let skillId = 1;
+                
+                // Проверяем технические навыки
+                technicalSkills.forEach(skill => {
+                    const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedSkill}\\b`, 'i');
+                    if (regex.test(description)) {
+                        extractedSkills.push({
+                            id: skillId++,
+                            name: skill,
+                            category: 'hard_skill',
+                            selected: false,
+                        });
+                    }
+                });
+                
+                // Проверяем мягкие навыки
+                softSkills.forEach(skill => {
+                    const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedSkill}\\b`, 'i');
+                    if (regex.test(description)) {
+                        extractedSkills.push({
+                            id: skillId++,
+                            name: skill,
+                            category: 'soft_skill',
+                            selected: false,
+                        });
+                    }
+                });
+                
+                console.log('Найдено навыков:', extractedSkills.length);
+            }
+            
+            function renderSkills() {
+                skillsContainer.innerHTML = '';
+                
+                if (extractedSkills.length === 0) {
+                    skillsContainer.innerHTML = '<p>Навыки не обнаружены в описании вакансии.</p>';
+                    return;
+                }
+                
+                extractedSkills.forEach(skill => {
+                    const skillDiv = document.createElement('div');
+                    skillDiv.className = `skill-item ${skill.selected ? 'selected' : ''}`;
+                    skillDiv.innerHTML = `
+                        <input type="checkbox" id="skill-${skill.id}" ${skill.selected ? 'checked' : ''}>
+                        <span class="skill-name">${skill.name}</span>
+                        <span class="skill-category ${skill.category === 'soft_skill' ? 'soft' : ''}">${skill.category === 'hard_skill' ? 'Технический' : 'Мягкий'}</span>
+                    `;
+                    
+                    skillDiv.addEventListener('click', function() {
+                        skill.selected = !skill.selected;
+                        renderSkills();
+                        updateSelectedSkills();
+                    });
+                    
+                    skillsContainer.appendChild(skillDiv);
+                });
+            }
+            
+            function updateSelectedSkills() {
+                prioritySkills = extractedSkills
+                    .filter(skill => skill.selected)
+                    .map(skill => skill.name);
+                
+                selectedSkillsContainer.innerHTML = prioritySkills.length > 0 
+                    ? prioritySkills.map(skill => `<span style="display:inline-block;background:#e3f2fd;padding:5px 10px;margin:5px;border-radius:4px;">${skill}</span>`).join('')
+                    : '<p>Приоритетные навыки не выбраны.</p>';
+            }
+            
+            // Пример описания вакансии для демонстрации
+            const demoDescription = "Требуется опытный разработчик JavaScript со знанием React, Node.js и MongoDB. Кандидат должен обладать навыками работы в команде, быть коммуникабельным и адаптивным. Опыт работы с Git и CI/CD обязателен.";
+            jobDescriptionInput.value = demoDescription;
+            
+            // Автоматически запускаем извлечение навыков на демо-описании
+            extractSkillsFromDescription(demoDescription);
+            renderSkills();
+            updateSelectedSkills();
+        });
+    </script>
+</body>
+</html>

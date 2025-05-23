@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Инструкция по обновлению Favicon</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2 { 
+      color: #2672e3;
+    }
+    pre {
+      background-color: #f4f5f7;
+      padding: 12px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Courier New', monospace;
+    }
+    .note {
+      background-color: #e8f4fd;
+      padding: 12px;
+      border-left: 4px solid #2672e3;
+      border-radius: 4px;
+    }
+    .logo-preview {
+      max-width: 200px;
+      display: block;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Инструкция по обновлению Favicon для проекта Raplle</h1>
+  
+  <p>Вы предоставили логотип Raplle, который идеально подходит для использования в качестве favicon. Я подготовил инструкцию по обновлению всех favicon и связанных с брендом изображений.</p>
+
+  <h2>Шаг 1: Создание Favicon</h2>
+  <p>Для создания полного набора favicon я рекомендую использовать онлайн-инструмент <a href="https://realfavicongenerator.net/" target="_blank">Real Favicon Generator</a>. Этот инструмент создаст все необходимые версии для различных устройств и браузеров.</p>
+  
+  <div class="note">
+    <p><strong>Примечание:</strong> Вы можете загрузить предоставленный логотип (изображение R на синем фоне) напрямую в Real Favicon Generator, и он создаст все необходимые файлы.</p>
+  </div>
+
+  <h2>Шаг 2: Загрузка сгенерированных файлов</h2>
+  <p>После генерации favicon загрузите пакет файлов и разместите их в папке <code>/public</code> вашего проекта, заменив существующие:</p>
+  
+  <pre><code>favicon.ico
+apple-touch-icon.png
+android-chrome-192x192.png
+android-chrome-512x512.png
+favicon-16x16.png
+favicon-32x32.png
+mstile-150x150.png
+safari-pinned-tab.svg
+</code></pre>
+
+  <h2>Шаг 3: Обновление manifest.json</h2>
+  <p>Обновите файл manifest.json, чтобы он указывал на новые файлы логотипов:</p>
+  
+  <pre><code>{
+  "short_name": "Raplle",
+  "name": "Raplle - AI-система для HR",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2672e3",
+  "background_color": "#ffffff"
+}
+</code></pre>
+
+  <h2>Шаг 4: Обновление index.html</h2>
+  <p>Обновите секцию head в index.html, чтобы включить все необходимые ссылки на новые favicon:</p>
+  
+  <pre><code>&lt;link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png"&gt;
+&lt;link rel="manifest" href="%PUBLIC_URL%/manifest.json"&gt;
+&lt;link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#2672e3"&gt;
+&lt;meta name="msapplication-TileColor" content="#2672e3"&gt;
+&lt;meta name="theme-color" content="#ffffff"&gt;</code></pre>
+
+  <h2>Дополнительно: Обновление логотипов в коде</h2>
+  <p>Если в проекте используются встроенные SVG-логотипы, их также следует обновить для соответствия новому бренду.</p>
+
+  <p class="note">
+    <strong>Примечание по цветам:</strong> Судя по логотипу, основной цвет бренда Raplle - градиент от #2672e3 (синий) до #35bfed (голубой). Вы можете использовать эти цвета для обновления цветовой схемы приложения.
+  </p>
+</body>
+</html>
